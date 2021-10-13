@@ -51,6 +51,7 @@ app.use("/",require("./view-routes/index"))
 
 // api routers
 app.use("/api/user",require("./api-routes/user.route"))
+app.use("/api/token",require("./api-routes/token.route"))
 
 //no router found will trigger this by default
 app.all('*',(req,res)=>{

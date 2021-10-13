@@ -87,8 +87,9 @@ exports.login =(req,res) =>{
                                                     .json(responseModel("success","user logged in ",{name:user.name,
                                                                                                      userType:user.userType,
                                                                                                      id:user._id,
-                                                                                                     accessToken:accessToken,
-                                                                                                     refreshToken:refreshToken}))
+                                                                                                     //accessToken:accessToken,
+                                                                                                     refreshToken:refreshToken
+                                                                                                    }))
                                        })
                                    .catch((err)=>{
                                        return res.status(statusCodes.internal_server_error)
