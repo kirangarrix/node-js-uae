@@ -6,7 +6,7 @@ const userController = require("../controllers/user.controller")
 const {authenticateUser} = require("../middleware/authentication.middleware")
 
 
-router.post("/",authenticateUser,[body("name", "Enter a valid name").trim().not().isEmpty(),
+router.post("/",[body("name", "Enter a valid name").trim().not().isEmpty(),
                  body("email","Enter a valid email").trim().isEmail(),
                  body('password',"Password must be at least 6 character long").trim().isLength({min:6}),
                  body("contactNumber", "Enter a valid name").trim().not().isEmpty(),
