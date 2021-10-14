@@ -27,10 +27,10 @@ exports.register = (req,res) => {
 
     let user_model = new userModel(user)
     
-    userModel.findOne({email:req.body.email})
-             .then((result =>{
-                 if(result) return res.status(statusCodes.not_acceptable)
-                                      .json(responseModel("failed","email already exists"))
+    // userModel.findOne({email:req.body.email})
+    //          .then((result =>{
+    //              if(result) return res.status(statusCodes.not_acceptable)
+    //                                   .json(responseModel("failed","email already exists"))
                  user_model.save()
                            .then(()=>{
                                    res.status(statusCodes.ok)
@@ -41,11 +41,11 @@ exports.register = (req,res) => {
                                   .json(responseModel("error",err+""))
                             })
                     
-                }))
-             .catch((err =>{
-                 res.status(statusCodes.internal_server_error)
-                    .json(responseModel("error",""+err))
-             }))
+            //     }))
+            //  .catch((err =>{
+            //      res.status(statusCodes.internal_server_error)
+            //         .json(responseModel("error",""+err))
+            //  }))
     
 
 }
