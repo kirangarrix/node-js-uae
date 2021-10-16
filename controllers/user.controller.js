@@ -10,6 +10,7 @@ const responseModel = require("../models/api/response.model")
 const statusCodes = require("../util/response-codes")
 const userModel = require("../models/db/user.model")
 const tokenModel = require("../models/db/token.model")
+const supervisorDetailModel = require("../models/db/supervisorDetail.model")
 const config = require("../config/app.config")
 
 exports.register = (req,res) => {
@@ -27,25 +28,45 @@ exports.register = (req,res) => {
 
     let user_model = new userModel(user)
     
-    // userModel.findOne({email:req.body.email})
-    //          .then((result =>{
-    //              if(result) return res.status(statusCodes.not_acceptable)
-    //                                   .json(responseModel("failed","email already exists"))
+    //check email exists
+    userModel.findOne({email:req.body.email})
+             .then((result =>{
+                 if(result) return res.status(statusCodes.not_acceptable)
+                                      .json(responseModel("failed","email already exists"))
+                 //save user info
                  user_model.save()
-                           .then(()=>{
-                                   res.status(statusCodes.ok)
-                                      .json(responseModel("success","new user added"))
+                           .then((user)=>{
+                                let userId = user.id;
+                                  
+                                let userDetail ={
+                                    userId:userId,
+                                    contactNumber:req.body.contactNumber,
+                                    dob:req.body.dob}
+
+                                    let userDetail_model = new supervisorDetailModel(userDetail);
+                                     
+                                    //save user details
+                                    userDetail_model.save()
+                                                    .then(()=>{
+                                                        res.status(statusCodes.ok)
+                                                           .json(responseModel("success","new user added"))
+                                                    })
+                                                    .catch((err)=>{
+                                                        res.status(statusCodes.internal_server_error)
+                                                           .json(responseModel("error",err+""))
+                                                    })
+
                                 })
                             .catch((err)=>{
                                res.status(statusCodes.internal_server_error)
                                   .json(responseModel("error",err+""))
                             })
                     
-            //     }))
-            //  .catch((err =>{
-            //      res.status(statusCodes.internal_server_error)
-            //         .json(responseModel("error",""+err))
-            //  }))
+             }))
+             .catch((err =>{
+                 res.status(statusCodes.internal_server_error)
+                    .json(responseModel("error",""+err))
+             }))
     
 
 }

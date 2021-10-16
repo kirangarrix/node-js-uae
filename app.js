@@ -23,7 +23,8 @@ app.use(cors())
 app.use(morgan('tiny'))//logs request-endpoint and time taken
 app.use(express.static(path.join(__dirname, 'public')))
 
-// mongoose connection
+// mongoose connection MONGO_DB_URL
+//mongoose.connect("mongodb+srv://vertex:Vertex9539@cluster0.gn40a.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
 mongoose.connect(process.env.MONGO_DB_URL)
         .then((result)=>{
             console.log("db connection success")
@@ -52,6 +53,8 @@ app.use("/",require("./view-routes/index"))
 // api routers
 app.use("/api/user",require("./api-routes/user.route"))
 app.use("/api/token",require("./api-routes/token.route"))
+app.use("/api/product",require("./api-routes/product.route"))
+app.use("/api/inventory",require("./api-routes/inventory.route"))
 
 //no router found will trigger this by default
 app.all('*',(req,res)=>{
