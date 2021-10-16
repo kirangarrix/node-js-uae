@@ -86,62 +86,43 @@ exports.addEntry = (req,res)=>{
 
 }
 
-exports.getProducts = (req,res)=>{
-    productModel.find()
-                .then(results=>{
-                    res.status(statusCodes.ok)
-                       .json(responseModel("success","products",{products:results}))
-                })
-                .catch((err)=>{
-                    res.status(statusCodes.internal_server_error)
-                    .json(responseModel("error",err+""))
-                })  
-}
-
-exports.editProduct = (req,res)=>{
+exports.getInventoryList = (req,res)=>{
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
         return res.status(statusCodes.not_acceptable)
                   .json(responseModel("failed","validation errors",{errors: errors.array()}))
     }
-    
-    let productId = req.params.productId;
-    let description = req.body.description;
-    
-    let product = {
-        name:req.body.name,
-        description:description == undefined?"":description,
-        measuredUnit:req.body.measuredUnit,
-        pricePerUnit:req.body.pricePerUnit,
-        openingQuantity:req.body.openingQuantity,
-        availableQuantity:req.body.openingQuantity}
-    
-    productModel.findByIdAndUpdate(productId,product)
-                 .then(result=>{
-        
-                    res.status(statusCodes.ok)
-                       .json(responseModel("success","product edited"))
-                    
-                 })
-                 .catch((err)=>{
-                    res.status(statusCodes.internal_server_error)
-                    .json(responseModel("error",err+""))
-                })   
 
+    let startDate = req.query.startDate;
+    let endDate = req.query.endDate;
+
+    stockEntryModel.find({
+                         $and:[
+                             {createdAt:{$gte: new Date(new Date(startDate).setHours(00, 00, 00)),
+                                          $lt: new Date(new Date(endDate).setHours(23, 59, 59))}}]})
+                  .then(result =>{
+                        res.status(statusCodes.ok)
+                           .json(responseModel("success","inventory list",{inventoryList:result}))
+                   })
+                  .catch((err)=>{
+                        res.status(statusCodes.internal_server_error)
+                           .json(responseModel("error",err+""))
+                  })  
 }
 
-exports.deleteProduct = (req,res)=>{
+
+exports.deleteInventoryList = (req,res)=>{
  
-    let productId = req.params.productId;
+    let inventoryListId = req.params.inventoryListId;
     
-    productModel.findByIdAndDelete(productId)
-                 .then(result=>{
+    stockEntryModel.findByIdAndDelete(inventoryListId)
+                   .then(result=>{
                      
                      if(!result) return res.status(statusCodes.not_found)
-                                           .json(responseModel("failed","product not found"))
+                                           .json(responseModel("failed","inventory list item not found"))
                      
                     res.status(statusCodes.ok)
-                       .json(responseModel("success","product deleted"))
+                       .json(responseModel("success","inventory list item deleted"))
                     
                  })
                  .catch((err)=>{
