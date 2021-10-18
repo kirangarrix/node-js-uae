@@ -55,6 +55,10 @@ app.use("/api/user",require("./api-routes/user.route"))
 app.use("/api/token",require("./api-routes/token.route"))
 app.use("/api/product",require("./api-routes/product.route"))
 app.use("/api/inventory",require("./api-routes/inventory.route"))
+app.use("/api/advisor",require("./api-routes/advisor.route"))
+app.use("/api/company",require("./api-routes/company.route"))
+
+
 
 //no router found will trigger this by default
 app.all('*',(req,res)=>{
@@ -63,3 +67,4 @@ app.all('*',(req,res)=>{
 
 
 app.listen(port,()=>console.log(`\napplication is running at ${port}`))
+

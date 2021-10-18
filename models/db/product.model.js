@@ -1,7 +1,7 @@
 const mongoose=require('mongoose')
 
 
-// creating token model
+// creating product model
 const productSchema=mongoose.Schema({
                name:{type:String,required:true},
                description:{type:String},
@@ -12,3 +12,5 @@ const productSchema=mongoose.Schema({
              },{timestamps:true})
   
 module.exports =mongoose.model('product',productSchema);
+
+

@@ -8,6 +8,7 @@ const userSchema = mongoose.Schema({
      email:{type:String,required:true},
      password:{type:String,required:true},
      userType:{type:String,required:true,enum:["ROLE_ADMIN", "ROLE_SUPERVISOR"]},
+     isActive:{type:Boolean,required:true,default:false}
 },{timestamps:true})
 
 

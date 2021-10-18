@@ -24,6 +24,7 @@ exports.register = (req,res) => {
         name:req.body.name,
         email:req.body.email,
         password:req.body.password,
+        isActive:false,
         userType:"ROLE_SUPERVISOR"}
 
     let user_model = new userModel(user)
@@ -39,7 +40,7 @@ exports.register = (req,res) => {
                                 let userId = user.id;
                                   
                                 let userDetail ={
-                                    userId:userId,
+                                    user:userId,
                                     contactNumber:req.body.contactNumber,
                                     dob:req.body.dob}
 
@@ -86,6 +87,8 @@ exports.login =(req,res) =>{
                   if(user==null) return res.status(statusCodes.not_found)
                                            .json(responseModel("failed","email not registered"))
                   else{
+                      if(!user.isActive) return res.status(statusCodes.unauthorized)
+                                                   .json(responseModel("failed","user is not active"));
 
                    //email found now check for password 
                    let dbPassword=user.password                     

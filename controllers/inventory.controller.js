@@ -61,7 +61,7 @@ exports.addEntry = (req,res)=>{
                     //stock count updated in product db now 
                     if(stockStatus){
                         let stockEntry = {
-                            productId:productId,
+                            Product:productId,
                             stockStatus:stockStatus,
                             noOfUnits:noOfUnits}     
                         let stockEntry_model = new stockEntryModel(stockEntry)
@@ -86,6 +86,7 @@ exports.addEntry = (req,res)=>{
 
 }
 
+
 exports.getInventoryList = (req,res)=>{
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
@@ -95,11 +96,14 @@ exports.getInventoryList = (req,res)=>{
 
     let startDate = req.query.startDate;
     let endDate = req.query.endDate;
-
+    
+    //joining products and stockEntry
     stockEntryModel.find({
                          $and:[
                              {createdAt:{$gte: new Date(new Date(startDate).setHours(00, 00, 00)),
                                           $lt: new Date(new Date(endDate).setHours(23, 59, 59))}}]})
+                  .select("stockStatus stockStatus _id createdAt noOfUnits")
+                  .populate({path:"Product",select:"name availableQuantity"})
                   .then(result =>{
                         res.status(statusCodes.ok)
                            .json(responseModel("success","inventory list",{inventoryList:result}))
@@ -108,6 +112,7 @@ exports.getInventoryList = (req,res)=>{
                         res.status(statusCodes.internal_server_error)
                            .json(responseModel("error",err+""))
                   })  
+
 }
 
 
@@ -131,3 +136,4 @@ exports.deleteInventoryList = (req,res)=>{
                 })   
 
 }
+

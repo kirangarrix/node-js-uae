@@ -11,7 +11,8 @@ router.post("/",authenticateUser
                    body("noOfUnits").trim().not().isEmpty(),
                 ],inventoryController.addEntry);
 
-router.get("/",authenticateUser,[query("startDate").trim().not().isEmpty(),
+router.get("/",authenticateUser,
+               [query("startDate").trim().not().isEmpty(),
                 query('endDate').trim().not().isEmpty()],inventoryController.getInventoryList);
 
 router.delete("/:inventoryListId",authenticateUser,
