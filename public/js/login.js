@@ -2,8 +2,9 @@ $(document).ready(function () {
     // hide some elements
     $("#server-error-box").hide();
     $("#spinner-sign").hide();
-    $("#email-error").hide();
-    $("#password-error").hide();
+    // $("#email-error").hide();
+    // $("#password-error").hide();
+   
 
 
     $("#login-form").submit(function (e) { 
@@ -46,8 +47,10 @@ $(document).ready(function () {
               type: "POST",
               url: "/api/user/login",
               data:{email:email,password:password},
-              success: function (response) {
-                $("#server-error-box").hide();
+              success: function (response) { 
+                // $("#server-error-box").hide();
+                
+
                 $("#btn-login").show();
                 $("#spinner-sign").hide();
 
@@ -64,6 +67,9 @@ $(document).ready(function () {
                 window.location.href ="/"; 
               },
               error:function (error) {
+                $("#server-error-box").css("display","block");
+                $("#email-error").css("display","block");
+                $("#password-error").css("display","block");
                 $("#btn-login").show();
                 $("#spinner-sign").hide();
                 let response = error.responseJSON;

@@ -32,7 +32,7 @@
     </div>
     <div class="card-body">
       <p class="login-box-msg">Sign in to start your session</p>
-      <div class="alert alert-warning" role="alert" id="server-error-box">
+      <div style="display: none;" class="alert alert-warning" role="alert" id="server-error-box">
         <b id="server-error"></b>
       </div>
       <form id="login-form">
@@ -44,7 +44,7 @@
             </div>
           </div>
         </div>
-        <span class="text-danger" id="email-error">invalid email</span>
+        <span style="display: none;" class="text-danger" id="email-error">invalid email</span>
         <div class="input-group mt-3">
           <input type="password" class="form-control" id="password" placeholder="Password">
           <div class="input-group-append">
@@ -53,7 +53,7 @@
             </div>
           </div>
         </div>
-        <p class="text-danger" id="password-error">Password required</p>
+        <p style="display: none;" class="text-danger" id="password-error">Password required</p>
         <div class="row mt-3">
           <div class="col-8">
             <div class="icheck-primary">
